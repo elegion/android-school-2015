@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="status_bar_height">0dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="corner_radius">4dp</dimen>
+    <dimen name="user_avatar_size">150dp</dimen>
+</resources>

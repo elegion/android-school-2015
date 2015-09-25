@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GitHubClient</string>
+    <string name="app_icon">app logo</string>
+    <string name="user_avatar">user avatar</string>
+    <string name="my_repositories">МОИ РЕПОЗИТОРИИ</string>
+    <string name="logout">Выйти</string>
+    <string name="ab_my_repositories">Мои репозитории</string>
+    <string name="ab_my_profile">Мой профиль</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="client_id">39205885201967083aa5</string>
+    <string name="client_secret">8b0d254e35bb351b0679831024fe0db32657eb1f</string>
+    <string name="redirect_url">http://android.school2015/auth</string>
+    <string name="scope">user</string>
+</resources>
