@@ -35,6 +35,10 @@ public class RepositoriesAdapter extends RecyclerView.Adapter<RepositoryViewHold
         return mRepositoryList.size();
     }
 
+    public ArrayList<Repository> getRepositoryList() {
+        return new ArrayList<>(mRepositoryList);
+    }
+
     public void addAll(List<Repository> repositories) {
         mRepositoryList.addAll(repositories);
         notifyItemRangeInserted(0, repositories.size());

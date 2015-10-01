@@ -19,6 +19,7 @@ public final class ActivityBuilder {
 
     //region ---------------------------------------- Variables
 
+    private final Bundle mExtras = new Bundle();
     private Context mContext;
     private Class<? extends Activity> mClass;
     private Uri mData;
@@ -26,7 +27,6 @@ public final class ActivityBuilder {
     private String mAction;
     private boolean mFinishCallerActivity;
     private int mRequestCode;
-    private final Bundle mExtras = new Bundle();
 
     //endregion
 
@@ -104,14 +104,14 @@ public final class ActivityBuilder {
 
     public void startActivityForResult() {
         Intent intent = createBaseStartActivityIntent();
-        if(intent!=null) {
-            ((Activity)mContext).startActivityForResult(intent, mRequestCode);
+        if (intent != null) {
+            ((Activity) mContext).startActivityForResult(intent, mRequestCode);
         }
     }
 
     public void startActivity() {
         Intent intent = createBaseStartActivityIntent();
-        if(intent!=null) {
+        if (intent != null) {
             mContext.startActivity(intent);
             if (mContext instanceof Activity && mFinishCallerActivity) {
                 ((Activity) mContext).finish();

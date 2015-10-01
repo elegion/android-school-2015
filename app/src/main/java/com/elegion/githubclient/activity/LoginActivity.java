@@ -22,8 +22,8 @@ import java.io.IOException;
  */
 public class LoginActivity extends BaseActivity {
 
-    private static final String SOME_ERROR = "SOME_ERROR";
     public static final String ACCESS_TOKEN_RESPONSE_KEY = "access_token";
+    private static final String SOME_ERROR = "SOME_ERROR";
     private boolean mDataSend = false;
 
     @Override
@@ -36,6 +36,28 @@ public class LoginActivity extends BaseActivity {
         webView.setHorizontalScrollBarEnabled(false);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(buildAuthUrl());
+    }
+
+    private String getCodeFromUrl(String url) {
+        final int codeStart = url.indexOf("code=") + "code=".length();
+        final int codeEnd = url.indexOf('&', codeStart) == -1 ? url.length() : url.indexOf('&', codeStart);
+        return url.substring(codeStart, codeEnd);
+    }
+
+    private void changeCodeToAuthToken(String code) {
+        ChangeCodeToAuthTokenTask task = new ChangeCodeToAuthTokenTask();
+        task.execute(code);
+    }
+
+    private String buildAuthUrl() {
+        return "https://github.com/login/oauth/authorize?client_id="
+                + getString(R.string.client_id)
+                + "&"
+                + "redirect_uri="
+                + getString(R.string.redirect_url)
+                + "&"
+                + "scope="
+                + getString(R.string.scope);
     }
 
     private class AuthWebViewClient extends WebViewClient {
@@ -72,29 +94,6 @@ public class LoginActivity extends BaseActivity {
         private boolean isErrorUrl(String url) {
             return url.contains("error");
         }
-    }
-
-
-    private String getCodeFromUrl(String url) {
-        final int codeStart = url.indexOf("code=") + "code=".length();
-        final int codeEnd = url.indexOf('&', codeStart) == -1 ? url.length() : url.indexOf('&', codeStart);
-        return url.substring(codeStart, codeEnd);
-    }
-
-    private void changeCodeToAuthToken(String code) {
-        ChangeCodeToAuthTokenTask task = new ChangeCodeToAuthTokenTask();
-        task.execute(code);
-    }
-
-    private String buildAuthUrl() {
-        return "https://github.com/login/oauth/authorize?client_id="
-                + getString(R.string.client_id)
-                + "&"
-                + "redirect_uri="
-                + getString(R.string.redirect_url)
-                + "&"
-                + "scope="
-                + getString(R.string.scope);
     }
 
     private class ChangeCodeToAuthTokenTask extends AsyncTask<String, Void, Boolean> {

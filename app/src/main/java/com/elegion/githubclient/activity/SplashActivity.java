@@ -19,8 +19,8 @@ import com.elegion.githubclient.R;
 public class SplashActivity extends BaseActivity {
 
     private static final int ANIMATION_DURATION = 1500;
-    private ImageView mAppLogoImageView;
     private final AnimatorSet mAnimatorSet = new AnimatorSet();
+    private ImageView mAppLogoImageView;
     private final Animator.AnimatorListener mAnimatorListener = new AnimatorListenerAdapter() {
         @Override
         public void onAnimationEnd(Animator animation) {
@@ -37,7 +37,7 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_splash);
-        mAppLogoImageView = (ImageView)findViewById(R.id.img_app_logo);
+        mAppLogoImageView = (ImageView) findViewById(R.id.img_app_logo);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class SplashActivity extends BaseActivity {
 
 
     private void startInitialAnimation() {
-        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mAppLogoImageView, View.ALPHA,0, 1);
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mAppLogoImageView, View.ALPHA, 0, 1);
         ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(mAppLogoImageView, View.SCALE_X, 0, 1);
         ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(mAppLogoImageView, View.SCALE_Y, 0, 1);
 

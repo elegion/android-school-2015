@@ -6,4 +6,5 @@
     <string name="logout">Выйти</string>
     <string name="ab_my_repositories">Мои репозитории</string>
     <string name="ab_my_profile">Мой профиль</string>
+    <string name="no_info">Нет информации</string>
 </resources>

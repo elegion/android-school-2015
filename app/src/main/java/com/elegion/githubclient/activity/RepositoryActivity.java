@@ -2,33 +2,21 @@ package com.elegion.githubclient.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.elegion.githubclient.R;
-import com.elegion.githubclient.event.ItemSelectedEvent;
-import com.elegion.githubclient.utils.ActivityBuilder;
-import com.elegion.githubclient.utils.Otto;
-import com.squareup.otto.Subscribe;
+import com.elegion.githubclient.fragment.RepositoryFragment;
 
-/**
- * @author Artem Mochalov.
- */
-public class MyRepositoriesActivity extends BaseActivity {
-    @SuppressWarnings("unused")
-    @Subscribe
-    public void onItemSelected(ItemSelectedEvent event) {
-        new ActivityBuilder()
-                .setContext(this)
-                .setClass(RepositoryActivity.class)
-                .putExtra(RepositoryActivity.EXTRA_REPO, event.getObject().toString())
-                .startActivity();
-    }
+public class RepositoryActivity extends AppCompatActivity {
+    public static final String EXTRA_REPO = "repo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ac_repositories);
+        setContentView(R.layout.ac_repository);
+        final String repo = getIntent().getStringExtra(EXTRA_REPO);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -36,22 +24,12 @@ public class MyRepositoriesActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setHomeButtonEnabled(true);
+            actionBar.setTitle(repo);
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (findViewById(R.id.detail) == null) {
-            Otto.register(this);
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (findViewById(R.id.detail) == null) {
-            Otto.unregister(this);
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.detail, RepositoryFragment.newInstance(repo))
+                    .commit();
         }
     }
 

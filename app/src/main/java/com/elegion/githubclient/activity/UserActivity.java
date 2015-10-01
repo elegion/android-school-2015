@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.elegion.githubclient.AppDelegate;
 import com.elegion.githubclient.R;
 import com.elegion.githubclient.api.ApiClient;
 import com.elegion.githubclient.model.User;
@@ -64,6 +65,7 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
             startActivity(MyRepositoriesActivity.class, false);
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -121,6 +123,9 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
         protected void onPostExecute(User user) {
             if (user != null) {
                 mUserName.setText(user.getName());
+                AppDelegate.getSettings().edit()
+                        .putString(AppDelegate.USER_NAME, user.getName())
+                        .apply();
                 Picasso.with(UserActivity.this)
                         .load(user.getAvatarUrl())
                         .into(mUserAvatar);

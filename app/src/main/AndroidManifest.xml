@@ -1,16 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.elegion.githubclient">
+    package="com.elegion.githubclient"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- PERMISSIONS -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
-    <application android:allowBackup="true"
-                 android:label="@string/app_name"
-                 android:icon="@drawable/ic_launcher"
-                 android:supportsRtl="true"
-                 android:name=".AppDelegate"
-                 android:theme="@style/AppTheme">
+    <application
+        android:name=".AppDelegate"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
         <!-- ACTIVITIES -->
 
@@ -19,26 +21,23 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.UserActivity"
             android:label="@string/ab_my_profile"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MyRepositoriesActivity"
-            android:label="@string/ab_my_repositories"
-            android:screenOrientation="portrait"/>
-
+            android:label="@string/ab_my_repositories" />
+        <activity android:name=".activity.RepositoryActivity" />
     </application>
 
 </manifest>

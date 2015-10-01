@@ -1,7 +1,6 @@
 package com.elegion.githubclient.api;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.elegion.githubclient.AppDelegate;
 import com.squareup.okhttp.MediaType;
@@ -26,8 +25,8 @@ public class ApiClient {
     public static final String GET_CURRENT_USER_REPOS_URL = "https://api.github.com/user/repos";
     public static final String CHANGE_TOKEN_URL = "https://github.com/login/oauth/access_token";
     public static final int STATUS_CODE_OK = 200;
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String LIST_DATA_KEY = "list_data";
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private final OkHttpClient mClient = new OkHttpClient();
     private final Request.Builder mBuilder = new Request.Builder();
     private JSONObject mJsonData;
