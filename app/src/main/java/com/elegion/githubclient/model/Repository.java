@@ -1,12 +1,22 @@
 package com.elegion.githubclient.model;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.elegion.githubclient.BuildConfig;
 
 /**
  * @author Artem Mochalov.
  */
 public class Repository implements Parcelable {
+
+    public static final Uri URI = new Uri.Builder()
+            .scheme("content")
+            .authority(BuildConfig.APPLICATION_ID)
+            .path("repo")
+            .build();
+
     public static final Creator<Repository> CREATOR = new Creator<Repository>() {
         @Override
         public Repository createFromParcel(Parcel in) {

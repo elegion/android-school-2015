@@ -4,13 +4,15 @@ package com.elegion.githubclient.event;
  * @author Grigoriy Dzhanelidze
  */
 public class ItemSelectedEvent {
-    private Object mObject;
 
-    public ItemSelectedEvent(Object object) {
-        mObject = object;
+    private final long mId;
+
+    public ItemSelectedEvent(long id) {
+        mId = id;
     }
 
-    public Object getObject() {
-        return mObject;
+    public long getId() {
+        return mId;
     }
+
 }

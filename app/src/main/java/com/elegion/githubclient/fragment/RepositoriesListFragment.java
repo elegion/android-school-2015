@@ -1,11 +1,21 @@
 package com.elegion.githubclient.fragment;
 
 import android.app.Fragment;
+import android.app.LoaderManager;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Loader;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +23,8 @@ import android.view.ViewGroup;
 import com.elegion.githubclient.R;
 import com.elegion.githubclient.adapter.RepositoriesAdapter;
 import com.elegion.githubclient.api.ApiClient;
+import com.elegion.githubclient.api.GithubApi;
+import com.elegion.githubclient.model.Repo;
 import com.elegion.githubclient.model.Repository;
 
 import org.json.JSONArray;
@@ -23,12 +35,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 /**
  * @author Grigoriy Dzhanelidze
  */
-public class RepositoriesListFragment extends Fragment {
+public class RepositoriesListFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
+
     private static final String LIST = "list";
+
     private RecyclerView mRepositoryList;
+
+    private RepositoriesAdapter mAdapter = new RepositoriesAdapter();
 
     @Nullable
     @Override
@@ -40,30 +61,63 @@ public class RepositoriesListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRepositoryList = (RecyclerView) view.findViewById(R.id.repositories_list);
-        mRepositoryList.setAdapter(new RepositoriesAdapter());
-        if (savedInstanceState == null) {
-            new GetRepositoriesTask().execute();
-        } else {
-            ArrayList<Parcelable> parcelables = savedInstanceState.getParcelableArrayList(LIST);
-            if (parcelables == null) {
-                return;
-            }
-            ArrayList<Repository> repositories = new ArrayList<>(parcelables.size());
-            for (Parcelable p : parcelables) {
-                repositories.add((Repository) p);
-            }
-            ((RepositoriesAdapter) mRepositoryList.getAdapter()).addAll(repositories);
-        }
+        mAdapter.setHasStableIds(true);
+        mRepositoryList.setAdapter(mAdapter);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(LIST,
-                ((RepositoriesAdapter) mRepositoryList.getAdapter()).getRepositoryList());
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(R.id.repositories_list, Bundle.EMPTY, this);
+        GithubApi.getService().getRepos(new ReposCallback(getActivity().getContentResolver()));
     }
 
-    private class GetRepositoriesTask extends AsyncTask<Void, Void, List<Repository>> {
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(getActivity().getApplicationContext(), Repo.URI,
+                null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.e("Repos", DatabaseUtils.dumpCursorToString(data));
+        mAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    private static class ReposCallback implements Callback<List<Repo>> {
+
+        private final ContentResolver mResolver;
+
+        public ReposCallback(ContentResolver resolver) {
+            mResolver = resolver;
+        }
+
+        @Override
+        public void success(List<Repo> repos, Response response) {
+            final ContentValues[] bulkValues = new ContentValues[repos.size()];
+            for (int i = 0; i < bulkValues.length; ++i) {
+                final Repo repo = repos.get(i);
+                final ContentValues values = new ContentValues();
+                values.put("_id", repo.getId());
+                values.put("name", repo.getName());
+                values.put("description", repo.getDescription());
+                bulkValues[i] = values;
+            }
+            mResolver.bulkInsert(Repo.URI, bulkValues);
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+
+        }
+    }
+
+    /*private class GetRepositoriesTask extends AsyncTask<Void, Void, List<Repository>> {
         @Override
         protected List<Repository> doInBackground(Void... params) {
             List<Repository> repositories = new ArrayList<>();
@@ -98,5 +152,6 @@ public class RepositoriesListFragment extends Fragment {
         protected void onPostExecute(List<Repository> repositories) {
             ((RepositoriesAdapter) mRepositoryList.getAdapter()).addAll(repositories);
         }
-    }
+    }*/
+
 }

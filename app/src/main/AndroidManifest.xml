@@ -38,6 +38,11 @@
             android:name=".activity.MyRepositoriesActivity"
             android:label="@string/ab_my_repositories" />
         <activity android:name=".activity.RepositoryActivity" />
+
+        <provider
+            android:authorities="${applicationId}"
+            android:name=".content.SQLiteProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

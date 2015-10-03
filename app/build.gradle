@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.search.githubclient"
+        applicationId "com.elegion.githubclient"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1

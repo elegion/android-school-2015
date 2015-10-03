@@ -42,7 +42,7 @@ public class RepositoryFragment extends Fragment
     @SuppressWarnings("unused")
     @Subscribe
     public void onItemSelected(ItemSelectedEvent event) {
-        loadRepo(event.getObject().toString());
+        loadRepo(getArguments().getString(NAME));
     }
 
     @Nullable

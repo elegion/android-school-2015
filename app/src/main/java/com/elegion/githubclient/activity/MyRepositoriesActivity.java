@@ -21,7 +21,7 @@ public class MyRepositoriesActivity extends BaseActivity {
         new ActivityBuilder()
                 .setContext(this)
                 .setClass(RepositoryActivity.class)
-                .putExtra(RepositoryActivity.EXTRA_REPO, event.getObject().toString())
+                .putExtra(RepositoryActivity.EXTRA_REPO, event.getId())
                 .startActivity();
     }
 

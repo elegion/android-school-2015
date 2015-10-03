@@ -3,6 +3,9 @@ package com.elegion.githubclient.api;
 import com.elegion.githubclient.AppDelegate;
 import com.elegion.githubclient.model.Repo;
 
+import java.util.List;
+
+import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
@@ -36,5 +39,8 @@ public class GithubApi {
     public interface GithubService {
         @GET("/repos/{user}/{repo}")
         Repo getRepo(@Path("user") String user, @Path("repo") String repo);
+
+        @GET("/user/repos")
+        void getRepos(Callback<List<Repo>> cb);
     }
 }

@@ -1,5 +1,7 @@
 package com.elegion.githubclient.adapter;
 
+import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +19,14 @@ import java.util.List;
  */
 public class RepositoriesAdapter extends RecyclerView.Adapter<RepositoryViewHolder> {
 
-    private final List<Repository> mRepositoryList = new ArrayList<>();
+    private Cursor mCursor;
+
+    public Cursor swapCursor(@NonNull Cursor cursor) {
+        final Cursor oldCursor = mCursor;
+        mCursor = cursor;
+        notifyDataSetChanged();
+        return oldCursor;
+    }
 
     @Override
     public RepositoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -27,20 +36,21 @@ public class RepositoriesAdapter extends RecyclerView.Adapter<RepositoryViewHold
 
     @Override
     public void onBindViewHolder(RepositoryViewHolder holder, int position) {
-        holder.bindItem(mRepositoryList.get(position));
+        if(mCursor.moveToPosition(position)) {
+            holder.bindItem(mCursor);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mRepositoryList.size();
+        return mCursor != null ? mCursor.getCount() : 0;
     }
 
-    public ArrayList<Repository> getRepositoryList() {
-        return new ArrayList<>(mRepositoryList);
-    }
-
-    public void addAll(List<Repository> repositories) {
-        mRepositoryList.addAll(repositories);
-        notifyItemRangeInserted(0, repositories.size());
+    @Override
+    public long getItemId(int position) {
+        if(mCursor.moveToPosition(position)) {
+            return mCursor.getLong(mCursor.getColumnIndex("_id"));
+        }
+        return super.getItemId(position);
     }
 }
